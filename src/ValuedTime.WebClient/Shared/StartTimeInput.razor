@@ -1,0 +1,90 @@
+﻿
+
+<div class="d-flex flex-column">
+    <div class="py-2">
+        <MudText Color="Color.Surface">@StartTime.ToShortTimeString()</MudText>
+    </div>
+    <MudButtonGroup Color="Color.Surface" Variant="Variant.Outlined">
+        <MudButton OnClick="() => AddMinutes(-60)"
+                   Disabled="MinutesToPrevious < 60"
+                   Variant="Variant.Outlined"
+                   Size="Size.Small">-60</MudButton>
+        <MudButton OnClick="() => AddMinutes(-15)"
+                   Disabled="MinutesToPrevious < 15"
+                   Variant="Variant.Outlined"
+                   Size="Size.Small">-15</MudButton>
+        <MudButton OnClick="() => AddMinutes(-5)"
+                   Disabled="MinutesToPrevious < 5"
+                   Variant="Variant.Outlined"
+                   Size="Size.Small">-5</MudButton>
+        <MudIconButton OnClick="SetNow"
+                       Variant="Variant.Outlined"
+                       Icon="@Icons.Material.Filled.AccessTime"
+                       Size="Size.Small"></MudIconButton>
+        <MudButton OnClick="() => AddMinutes(5)"
+                   Disabled="MinutesToInitial < 5"
+                   Variant="Variant.Outlined"
+                   Size="Size.Small">+5</MudButton>
+        <MudButton OnClick="() => AddMinutes(15)"
+                   Disabled="MinutesToInitial < 15"
+                   Variant="Variant.Outlined"
+                   Size="Size.Small">+15</MudButton>
+        <MudButton OnClick="() => AddMinutes(60)"
+                   Disabled="MinutesToInitial < 60"
+                   Variant="Variant.Outlined"
+                   Size="Size.Small">+60</MudButton>
+    </MudButtonGroup>
+</div>
+
+@code {
+    [Parameter]
+    public DateTime MinimumStartTime { get; set; }
+
+    [Parameter]
+    public DateTime StartTime { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime> StartTimeChanged { get; set; }
+
+    DateTime InitialStartTime { get; set; }
+    double MinutesToPrevious => (StartTime - MinimumStartTime).TotalMinutes;
+    double MinutesToInitial => (InitialStartTime - StartTime).TotalMinutes;
+
+    public StartTimeInput()
+    {
+        InitialStartTime = DateTime.Now;
+        StartTime = InitialStartTime;
+        MinimumStartTime = StartTime.Date;
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            InitialStartTime = StartTime;
+        }
+        return Task.CompletedTask;
+    }
+
+    Task SetNow()
+    {
+        StartTime = InitialStartTime;
+        return StartTimeChanged.InvokeAsync(StartTime);
+    }
+
+    Task AddMinutes(int minutes)
+    {
+        // If the difference between the start time and the start time rounded is more than zero, use that value first
+        // TODO: Cap the time
+        var normalizedStart = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, StartTime.Hour, StartTime.Minute, 0);
+        var newTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, StartTime.Hour, 0, 0);
+        var roundedMinutes = minutes * (int)Math.Round(StartTime.Minute / (double)minutes, MidpointRounding.ToZero);
+        newTime = newTime.AddMinutes(roundedMinutes);
+        if (newTime != normalizedStart)
+            StartTime = newTime;
+        else
+            StartTime = newTime.AddMinutes(minutes);
+
+        return StartTimeChanged.InvokeAsync(StartTime);
+    }
+}

@@ -1,0 +1,38 @@
+﻿@using QuickApp.Blazor.Shared.Custom
+@using ValuedTime.Quick.Host
+@using ValuedTime.Quick.Support
+
+@if (Node is not null)
+{
+    @switch (Node)
+    {
+        @*                case InteractNode.Object r:
+                    <ObjectNode Node="r" />
+                    break;
+                case InteractNode.Value r:
+                    if (r.Type == typeof(ColorOption))
+                    {
+                        <ColorOptionNode Node="r" />
+                    }
+                    else
+                    {
+                        <ValueNode Node="r" />
+                    }
+                    break;
+                case InteractNode.Enumerable r:
+                    <EnumerableNode Node="r" />
+                    break;
+                case InteractNode.Method r:
+                    <MethodNode Node="r" />
+                    break;
+*@
+        default:
+            <DefaultNode Node="Node" />
+            break;
+    }
+}
+
+@code {
+    [Parameter]
+    public IInteractNode? Node { get; set; }
+}

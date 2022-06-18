@@ -1,0 +1,39 @@
+﻿{
+  NodeType: Object,
+  DisplayName: Object With Actions,
+  Id: 1,
+  CurrentInstance_Id: ObjectWithActions_1,
+  Children: [
+    {
+      NodeType: Property,
+      DisplayName: Void Action,
+      Id: 2,
+      ParentId: 1,
+      Children: [
+        {
+          NodeType: Invokeable,
+          DisplayName: Void Action,
+          Id: 3,
+          ParentId: 2,
+          CurrentInstance_Id: Action_1,
+          Children: [
+            {
+              NodeType: ReturnValue,
+              DisplayName: Return Value,
+              Id: 4,
+              ParentId: 3,
+              Children: [
+                {
+                  NodeType: Value,
+                  DisplayName: Void,
+                  Id: 5,
+                  ParentId: 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

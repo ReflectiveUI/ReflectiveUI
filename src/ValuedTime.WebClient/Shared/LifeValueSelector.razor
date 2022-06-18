@@ -1,0 +1,81 @@
+﻿@inject ValuedTime.App.Services.LifeValueService LifeValueService;
+
+<MudChipSet MultiSelection="true" Filter="true" SelectedValues="_selectedValues" SelectedValuesChanged="SelectedChanged">
+    @foreach (var value in _values)
+    {
+        <MudChip Text="@value.Name" Value="value.LifeValueId" Variant="Variant.Text" Color="Color.Primary"></MudChip>
+    }
+</MudChipSet>
+
+<div>
+    @if (_isAddingNew)
+    {
+        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+            <MudTextField T="string" @bind-Value="@_name" Label="New Life Value" />
+            <MudChip Icon="@Icons.Material.Filled.Check" 
+                OnClick="SaveNew"
+                Text="Save" Variant="Variant.Text" Color="Color.Success"></MudChip>
+            <MudChip Icon="@Icons.Material.Filled.Close" 
+                OnClick="Cancel"
+                Text="Cancel" Variant="Variant.Text" Color="Color.Default"></MudChip>
+        </MudFocusTrap>
+    }
+    else
+    {
+        <MudChip Icon="@Icons.Material.Filled.Add" 
+            OnClick="Add"
+            Text="Add New" Variant="Variant.Text" Color="Color.Success"></MudChip>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Guid> SelectedLifeValueIds { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<List<Guid>> SelectedLifeValueIdsChanged { get; set; }
+
+    ICollection<object> _selectedValues = new List<object>();
+
+    bool _isAddingNew = false;
+    string? _name;
+    List<LifeValue> _values = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _values = await LifeValueService.GetAllLifeValues();
+            _selectedValues = SelectedLifeValueIds.Cast<object>().ToList();
+            StateHasChanged();
+        }
+    }
+
+    async Task SelectedChanged(ICollection<object> selected)
+    {
+        _selectedValues = selected;
+        SelectedLifeValueIds = selected.Cast<Guid>().ToList();
+        await SelectedLifeValueIdsChanged.InvokeAsync(SelectedLifeValueIds);
+    }
+
+    void Add()
+    {
+        _name = null;
+        _isAddingNew = true;
+    }
+
+    void Cancel()
+    {
+        _isAddingNew = false;
+    }
+
+    async Task SaveNew()
+    {
+        _isAddingNew = false;
+
+        var added = await LifeValueService.AddLifeValue(new CreateLifeValueCommand(_name!));
+        _values = await LifeValueService.GetAllLifeValues();
+        SelectedLifeValueIds.Add(added.LifeValueId);
+        _selectedValues.Add(added.LifeValueId);
+    }
+}

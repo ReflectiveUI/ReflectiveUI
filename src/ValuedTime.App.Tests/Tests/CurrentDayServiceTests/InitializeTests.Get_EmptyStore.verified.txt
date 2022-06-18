@@ -1,0 +1,14 @@
+﻿{
+  ActivityStore: {},
+  ActivityLogStore: {
+    StoredItems: [
+      {
+        Date: 2022-01-01,
+        Id: {
+          Value: Guid_1
+        }
+      }
+    ]
+  },
+  CurrentActivityLog: {}
+}

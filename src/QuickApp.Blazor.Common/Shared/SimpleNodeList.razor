@@ -1,0 +1,15 @@
+﻿
+@if (Nodes is not null)
+{
+    <div class="node-children">
+        @foreach (var child in Nodes)
+        {
+            <InteractNodeWrapper Node="child" />
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<IInteractNode>? Nodes { get; set; }
+}

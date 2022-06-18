@@ -1,0 +1,22 @@
+﻿@using ValuedTime.Quick.Host
+
+@if (Node is not null)
+{
+    <div>
+        <span class="node-name">@Node.DisplayName:</span>
+        <span>@Node.CurrentInstance</span>
+    </div>
+
+    <div class="node-children">
+        @foreach (var child in Node.Children)
+        {
+            <InteractNodeWrapper Node="child" />
+        }
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public InteractNode.Value? Node { get; set; }
+}

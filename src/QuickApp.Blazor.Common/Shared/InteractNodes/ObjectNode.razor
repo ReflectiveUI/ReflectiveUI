@@ -1,0 +1,11 @@
+﻿@using ValuedTime.Quick.Host
+
+<DisplayNode Node="Node" Collapsible="true" StartOpen="StartOpen" />
+
+@code {
+    [Parameter]
+    public InteractNode.Object? Node { get; set; }
+
+    [Parameter]
+    public bool StartOpen { get; set; }
+}

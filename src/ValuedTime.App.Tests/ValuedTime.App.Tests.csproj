@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="Verify.Xunit" Version="16.7.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ValuedTime.App\ValuedTime.App.csproj" />
+    <ProjectReference Include="..\ValuedTime.Quick\QuickApp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Tests\ActivityServiceTests\AvailableActivitiesTests.NoExistingActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>%(ParentFile).cs</DependentUpon>
+    </None>
+    <None Update="Tests\ActivityServiceTests\AvailableActivitiesTests.WithData.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>%(ParentFile).cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\GetAvailableActivitiesTests.ExistingInProgressActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>GetAvailableActivitiesTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\GetAvailableActivitiesTests.LessThan5MinutesFromLastStart.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>GetAvailableActivitiesTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\GetAvailableActivitiesTests.MoreThan5MinutesFromLastStart.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>GetAvailableActivitiesTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\AvailableActivitiesTests.NoExistingActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>AvailableActivitiesTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\AvailableActivitiesTests.WithData.verified.txt">
+      <DependentUpon>AvailableActivitiesTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\InitializeTests.Get_ExistingData.verified.txt">
+      <DependentUpon>InitializeTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\InitializeTests.Get_EmptyStore.verified.txt">
+      <DependentUpon>InitializeTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\GetMinimumStartTimeTests.ExistingInProgressActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>GetMinimumStartTimeTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\GetMinimumStartTimeTests.NoExistingActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>GetMinimumStartTimeTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\DeleteTimeEntryTests.ExistingInProgressActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>DeleteTimeEntryTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\CurrentDayServiceTests\DeleteTimeEntryTests.NoExistingActivity.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>DeleteTimeEntryTests.cs</DependentUpon>
+    </None>
+    <None Update="Tests\QuickAppTests\BuildTreeTests.BasicValues.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>BuildTreeTests.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
+</Project>

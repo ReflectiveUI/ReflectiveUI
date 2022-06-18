@@ -1,0 +1,96 @@
+﻿@using System.ComponentModel
+@using System.Collections.Immutable
+@using ValuedTime.Quick.Host
+
+@if (Node is not null)
+{
+    @if (_showDetail)
+    {
+        <button class="btn btn-outline-danger" @onclick="Clicked">
+            Cancel
+        </button>
+        <button class="btn btn-outline-light" @onclick="Invoke">
+            @Node.DisplayName
+        </button>
+        foreach (var p in Parameters!)
+        {
+            _parameterValues.TryAdd(p.DisplayName, "");
+            <div>
+                <label>@p.DisplayName</label>
+                <input type="text" @bind-value="_parameterValues[p.DisplayName]" />
+            </div>
+        }
+    }
+    else if (!Parameters!.Any())
+    {
+        <div class="node-content">
+            <button class="btn btn-outline-light" @onclick="Invoke">
+                @Node.DisplayName
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="node-content">
+            <button class="btn btn-outline-light" @onclick="Clicked">
+                @Node.DisplayName...
+            </button>
+        </div>
+    }
+
+    if (Node.LastResultNode?.CurrentInstance is not null)
+    {
+        <div class="node-children">
+            @foreach (var child in Node.LastResultNode.Children)
+            {
+                <InteractNodeWrapper Node="child" />
+            }
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public InteractNode.Method? Node { get; set; }
+
+    bool _showDetail;
+
+
+    List<InteractNode.Parameter>? Parameters => 
+        Node?.Children
+            .OfType<InteractNode.ParameterList>()
+            .FirstOrDefault()?.Children
+            .OfType<InteractNode.Parameter>()
+            .ToList();
+
+    Dictionary<string, string> _parameterValues = new();
+
+    private void Clicked()
+    {
+        _showDetail = !_showDetail;
+    }
+
+    private async Task Invoke()
+    {
+        if (Node is null)
+            return;
+
+        var parameters = Parameters!
+            .Select(p =>
+                {
+                    var s = _parameterValues[p.ParameterName];
+                    if (string.IsNullOrWhiteSpace(s))
+                        s = null;
+                    return (Type: p.Type, StringValue: s);
+                })
+            .Select(p => 
+                p.StringValue is null 
+                    ? null 
+                    : TypeDescriptor.GetConverter(p.Type).ConvertFromString(p.StringValue))
+            .ToArray();
+
+        await Node.InvokeAsync(parameters);
+        _parameterValues.Clear();
+        _showDetail = false;
+    }
+}

@@ -1,0 +1,15 @@
+﻿@using ValuedTime.Quick.Host
+
+@if (Node is not null)
+{
+    @foreach (var child in Node.Children)
+    {
+        <InteractNodeWrapper Node="child" />
+    }
+}
+
+
+@code {
+    [Parameter]
+    public IInteractNode? Node { get; set; }
+}

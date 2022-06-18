@@ -1,0 +1,105 @@
+﻿
+@typeparam TNode where TNode : IInteractNode
+
+@if (Node is not null)
+{
+    var supressedClass = Suppression.IsSuppressed
+        ? "node-suppressed"
+        : "";
+    var collapseClass = Collapsible ? "node-collapse" : "";
+    var openAttribute = Collapsible ? "" : "open";
+    <details @attributes="_detailsAttributes"
+        class="node @collapseClass @supressedClass node-@Node.GetType().Name.ToLowerInvariant()">
+        <summary @onclick:preventDefault="!Collapsible" @onclick="() => IsOpen = !IsOpen">
+            <div class="node-name">
+                <span>
+                    @Node.DisplayName 
+                </span>
+                @if (Suppression.IsSuppressed)
+                {
+                    if (Suppression.Reason == WellKnownReason.IsNull)
+                    {
+                        <span class="ms-1 badge rounded-pill bg-primary text-dark suppression-reason">
+                            Null
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="ms-1 badge rounded-pill bg-primary text-dark suppression-reason" title="@Suppression.Reason">
+                            i
+                        </span>
+                    }
+                }
+            </div>
+            <div class="node-type">
+                @if (ChildContent is null)
+                {
+                    <text>
+                        @Node.GetType().Name @(Node is ITypedNode t ? $"({t.Type.Name})" : "")
+                    </text>
+                }
+                else
+                {
+                    @ChildContent?.Invoke(Node)
+                }
+            </div>
+        </summary>
+        @Children
+    </details>
+}
+
+@code {
+    Dictionary<string, object> _detailsAttributes = new();
+
+    [Parameter]
+    public RenderFragment? Children { get; set; }
+
+    [Parameter]
+    public bool StartOpen { get; set; }
+
+    [Parameter]
+    public SuppressionStatus Suppression { get; set; } = SuppressionStatus.None;
+
+    [Parameter]
+    public bool IsOpen
+    {
+        get => _detailsAttributes.ContainsKey("open");
+        set
+        {
+            if (value)
+            {
+                _detailsAttributes["open"] = "open";
+            }
+            else
+            {
+                _detailsAttributes.Remove("open");
+            }
+        }
+    }
+
+    [Parameter]
+    public TNode? Node { get; set; }
+
+    [Parameter]
+    public bool Collapsible { get; set; }
+
+    [Parameter]
+    public RenderFragment<TNode>? ChildContent { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            IsOpen = StartOpen;
+            StateHasChanged();
+        }
+
+        if (!Collapsible && !IsOpen)
+        {
+            IsOpen = true;
+            StateHasChanged();
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+}

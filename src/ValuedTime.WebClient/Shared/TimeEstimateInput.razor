@@ -1,0 +1,55 @@
+﻿
+
+<MudSwitch T="bool" Checked="_enabled" CheckedChanged="@SwitchChanged" Label="Estimate" Color="Color.Primary" />
+
+@if(_enabled)
+{
+    <MudText Align="Align.Right">
+        @_minutes.ToString("F0") Minutes 
+    </MudText>
+    <MudSlider T="double" Value="_minutes" ValueChanged="@SliderChanged" Min="15" Max="90" Step="15" Color="Color.Primary"></MudSlider>
+}
+
+@code {
+    bool _enabled = true;
+    double _minutes = 15;
+
+    [Parameter]
+    public TimeSpan? Estimate
+    { 
+        get
+        {
+            if (_enabled)
+                return TimeSpan.FromMinutes(_minutes);
+            return null;
+        }
+        set
+        {
+            if (value is not null)
+            {
+                _enabled = true;
+                _minutes = value.Value.TotalMinutes;
+            }
+            else
+            {
+                _enabled = false;
+                _minutes = 15;
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<TimeSpan?> EstimateChanged { get; set; }
+
+    Task SwitchChanged(bool isSwitched)
+    {
+        _enabled = isSwitched;
+        return EstimateChanged.InvokeAsync(Estimate);
+    }
+
+    Task SliderChanged(double minutes)
+    {
+        _minutes = minutes;
+        return EstimateChanged.InvokeAsync(Estimate);
+    }
+}

@@ -1,0 +1,37 @@
+﻿
+.node {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid green;
+    padding: 0.3rem;
+}
+
+.node-type {
+    font-size: 0.6rem;
+}
+
+.node-name {
+}
+
+summary {
+    list-style: none;
+    cursor: initial;
+}
+
+details.node-collapse > summary {
+    position: relative;
+    cursor: pointer;
+    padding-left: 1.2rem;
+}
+
+    details.node-collapse > summary::before {
+        content: '►';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+details.node-collapse[open] > summary::before {
+    content: "▼";
+}

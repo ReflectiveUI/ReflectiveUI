@@ -1,0 +1,17 @@
+﻿@page "/"
+@using QuickApp.Blazor.Models
+@using ValuedTime.Quick.Host
+@using ValuedTime.Quick.Target
+@inject AppHost<ValuedTimeApp> AppHost
+
+<PageTitle>Index</PageTitle>
+
+@if (AppHost.RootInteractNode is not null)
+{
+    <label><input type="checkbox" @bind-value="_showSuppressed" /> Show Suppressed</label>
+    <div class="root @(_showSuppressed ? "show-suppressed" : "")">
+        <InteractNodeWrapper Node="AppHost.RootInteractNode" />
+    </div>
+    @*<DebugTree RootNode="AppHost.RootInteractNode" />*@
+}
+

@@ -1,0 +1,30 @@
+﻿@using System.ComponentModel
+@using ValuedTime.Quick.Host
+
+@if (Node is not null)
+{
+    if (!Node.IsEditable)
+    {
+        @Node.CurrentInstance
+    }
+    else
+    {
+        <input type="text" value="@Node.CurrentInstance" @onchange="Update" />
+    }
+}
+
+
+@code {
+    [Parameter]
+    public InteractNode.Value? Node { get; set; }
+
+    void Update(ChangeEventArgs args)
+    {
+        var text = (string?)args.Value;
+
+        Node!.InstanceSetter?.Invoke(
+            string.IsNullOrWhiteSpace(text)
+                ? null
+                : TypeDescriptor.GetConverter(Node!.Type).ConvertFromString(text));
+    }
+}

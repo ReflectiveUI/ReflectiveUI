@@ -1,0 +1,20 @@
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+
+.mud-timeline-vertical .mud-timeline-item .mud-timeline-item-divider {
+    min-width: 60px;
+}
+
+.mud-timeline-vertical.mud-timeline-position-start .mud-timeline-item-content, .mud-timeline-vertical.mud-timeline-position-end .mud-timeline-item-content {
+    max-width: calc(100% - 60px);
+}
+
+.mud-timeline-vertical.mud-timeline-position-start::before {
+    right: auto;
+    left: 28.5px;
+}
+
+.mud-button-group-outlined.mud-button-group-override-styles .mud-button-root {
+    padding: 1px 7px;
+    min-width: 42px;
+}

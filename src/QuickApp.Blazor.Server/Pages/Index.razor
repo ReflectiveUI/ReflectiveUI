@@ -1,0 +1,41 @@
+﻿@page "/"
+@using BeatGeneratorAPI
+@using QuickApp.Blazor.Shared
+@using ValuedTime.Quick.Host
+@using ValuedTime.Quick.Target
+@inject AppHost<ClockGenerator> AppHost
+
+<PageTitle>Valued Time</PageTitle>
+
+@if (AppHost.RootInteractNode is not null)
+{
+    <InteractNodeWrapper Node="AppHost.RootInteractNode" />
+    @*<DebugTree RootNode="AppHost.RootInteractNode" />*@
+}
+
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            AppHost.RootInstance.BeatUpdated += (sender, args) =>
+            {
+                AppHost.Reload();
+            };
+
+            AppHost.AppUpdated += (sender, args) =>
+            {
+                InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                    //Console.WriteLine("Re-rendered");
+                });
+            };
+            //await AppHost.RootInstance.LoadAsync();
+            AppHost.Reload();
+            await Task.CompletedTask;
+        }
+    }
+}
+

@@ -1,0 +1,21 @@
+﻿@using ValuedTime.Quick.Host
+
+@if (Node is not null)
+{
+    <div class="node-name">
+        @Node.DisplayName
+    </div>
+
+    <div class="node-children">
+        @foreach (var child in Node.Children)
+        {
+            <InteractNodeWrapper Node="child" />
+        }
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public ITypedNode? Node { get; set; }
+}

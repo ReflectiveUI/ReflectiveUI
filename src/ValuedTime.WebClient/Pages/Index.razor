@@ -1,0 +1,163 @@
+﻿@page "/"
+
+@using ValuedTime.App.Services
+
+@inject ValuedTime.App.Services.CurrentDayService ActivityLogService;
+
+<PageTitle>Day</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.False">
+    <MudTimeline TimelineAlign="TimelineAlign.Default" TimelinePosition="TimelinePosition.Left">
+        @* Today's Time Entries *@
+        @foreach (var te in Day.TimeEntries)
+        {
+            <MudTimelineItem Color="Color.Success" Elevation="0">
+                <ItemContent>
+                    <MudCard Outlined="true" Elevation="25">
+                        <MudCardContent>
+                            <EditableTimeEntry TimeEntry="te" />
+                        </MudCardContent>
+                    </MudCard>
+                </ItemContent>
+            </MudTimelineItem>
+        }
+    </MudTimeline>
+    @if (_mode == Mode.DisplayDay)
+    {
+        if (Day.CurrentActivity is null)
+        {
+            @* No Activity, Start a new activity? *@
+            <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Left">
+                <MudTimelineItem Elevation="3" Color="Color.Dark" Size="Size.Medium">
+                    <ItemDot>
+                        <MudIcon Size="Size.Small" Icon="@Icons.Filled.QuestionMark" Color="Color.Success" />
+                    </ItemDot>
+                    <ItemContent>
+                        @foreach (var act in AvailableActivities)
+                        {
+                            <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               StartIcon="@Icons.Material.Filled.PlayCircleOutline"
+                               IconColor="Color.Surface"
+                               OnClick="() => { _mode = Mode.AddingExistingActivity; _addingExistingActivityId = act.ActivityId; }"
+                               Size="Size.Small">@act.Name</MudButton>
+                        }
+                        <div class="py-1">
+                            <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               StartIcon="@Icons.Material.Filled.NewLabel"
+                               IconColor="Color.Surface"
+                               OnClick="() => _mode = Mode.AddingNewActivity"
+                               Size="Size.Small">New Activity</MudButton>
+                        </div>
+                    </ItemContent>
+                </MudTimelineItem>
+            </MudTimeline>
+        }
+        else
+        {
+            @* Activity In Progress *@
+            <MudTimeline TimelineAlign="TimelineAlign.Default" TimelinePosition="TimelinePosition.Left">
+                <MudTimelineItem Color="Color.Success" Elevation="0" Size="Size.Medium" TimelineAlign="TimelineAlign.Start">
+                    <ItemDot>
+                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.AccessTime" Color="Color.Dark" />
+                    </ItemDot>
+                    <ItemContent>
+                        <MudCard Outlined="true" Elevation="25">
+                            <MudCardContent>
+                                <MudText Color="Color.Default" Typo="Typo.caption">@Day.CurrentActivity.StartTime.ToShortTimeString()</MudText>
+                                @if (Day.CurrentActivity.Estimate is not null)
+                                {
+                                    <MudText Color="Color.Default" Typo="Typo.caption">
+                                        Plan: @Day.CurrentActivity.Estimate?.TotalMinutes Minutes
+                                        Actual: @((DateTime.Now - Day.CurrentActivity.StartTime).TotalMinutes.ToString("F0")) Minutes
+                                    </MudText>
+                                }
+                                <MudText Color="Color.Default" Typo="Typo.body1">@Day.CurrentActivity.ActivityName</MudText>
+                                <div>
+                                    @foreach (var value in Day.CurrentActivity.LifeValues)
+                                    {
+                                        <MudChip Text="@value.Name" Variant="Variant.Text" Color="Color.Primary"></MudChip>
+                                    }
+                                </div>
+                                <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   StartIcon="@Icons.Material.Filled.PauseCircle"
+                                   IconColor="Color.Surface"
+                                   OnClick="StopCurrentActivity"
+                                   Size="Size.Small">Put Down</MudButton>
+                                <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   StartIcon="@Icons.Material.Filled.CheckCircle"
+                                   IconColor="Color.Surface"
+                                   Size="Size.Small">Completed</MudButton>
+                            </MudCardContent>
+                        </MudCard>
+                    </ItemContent>
+                </MudTimelineItem>
+            </MudTimeline>
+        }
+    }
+    else if (_mode == Mode.AddingNewActivity)
+    {
+        <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Left">
+            <MudTimelineItem Elevation="3" Color="Color.Dark" Size="Size.Medium">
+                <ItemDot>
+                    <MudIcon Size="Size.Small" Icon="@Icons.Filled.Add" Color="Color.Success" />
+                </ItemDot>
+                <ItemContent>
+                    <StartNewActivity OnSubmit="StartNewActivity" OnCancel="() => _mode = Mode.DisplayDay" />
+                </ItemContent>
+            </MudTimelineItem>
+        </MudTimeline>
+    }
+    else if (_mode == Mode.AddingExistingActivity)
+    {
+        <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Left">
+            <MudTimelineItem Elevation="3" Color="Color.Dark" Size="Size.Medium">
+                <ItemDot>
+                    <MudIcon Size="Size.Small" Icon="@Icons.Filled.Add" Color="Color.Success" />
+                </ItemDot>
+                <ItemContent>
+                    <StartExistingActivity ActivityId="_addingExistingActivityId" OnSubmit="StartActivity" OnCancel="() => _mode = Mode.DisplayDay" />
+                </ItemContent>
+            </MudTimelineItem>
+        </MudTimeline>
+    }
+</MudContainer>
+
+    @code {
+    enum Mode
+    {
+        DisplayDay,
+        AddingNewActivity,
+        AddingExistingActivity,
+    }
+
+    Guid? _addingExistingActivityId = null;
+    Mode _mode = Mode.DisplayDay;
+    ActivityLog Day => ActivityLogService.CurrentActivityLog ?? new();
+    List<AvailableActivity> AvailableActivities => ActivityLogService.AvailableActivities;
+
+    protected override Task OnInitializedAsync()
+    {
+        return ActivityLogService.InitializeAsync(DateOnly.FromDateTime(DateTime.Now));
+    }
+
+    async Task StartActivity(StartActivityCommand command)
+    {
+        _mode = Mode.DisplayDay;
+        await ActivityLogService.StartActivity(command);
+    }
+
+    async Task StartNewActivity(StartNewActivityCommand command)
+    {
+        _mode = Mode.DisplayDay;
+        await ActivityLogService.StartNewActivity(command);
+    }
+
+    async Task StopCurrentActivity()
+    {
+        await ActivityLogService.StopCurrentActivity(DateTime.Now);
+    }
+}

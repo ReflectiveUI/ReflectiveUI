@@ -1,0 +1,37 @@
+﻿@using ValuedTime.Quick.Host
+
+@if (Node is not null)
+{
+    var supressedClass = Node.Suppression.IsSuppressed
+        ? "node-suppressed"
+        : "";
+    <div class="node @supressedClass node-@Node.GetType().Name.ToLowerInvariant()">
+        <NodeErrorBoundary>
+            <div class="node-name">
+                @Node.DisplayName 
+                @if (Node.Suppression.IsSuppressed)
+                {
+                    <text>&nbsp;</text>
+                    <span class="badge rounded-pill bg-warning text-dark suppression-reason" title="@Node.Suppression.SuppressionReason">
+                        i
+                    </span>
+                }
+            </div>
+            <div class="node-type">
+                @Node.GetType().Name
+            </div>
+            <div class="node-children">
+                @foreach (var child in Node.Children)
+                {
+                    <InteractNodeWrapper Node="child" />
+                }
+            </div>
+        </NodeErrorBoundary>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public IInteractNode? Node { get; set; }
+}

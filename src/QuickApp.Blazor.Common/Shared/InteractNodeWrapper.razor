@@ -1,0 +1,89 @@
+﻿@using QuickApp.Blazor.Shared.Custom
+@using QuickApp.Blazor.Shared.InteractNodes
+
+@if (Node is not null)
+{
+    <NodeErrorBoundary>
+        @switch (Node)
+        {
+            case InteractNode.Object r:
+                <DisplayNode Node="r" Collapsible="r.Parent is not null" StartOpen="true">
+                    <Children>
+                        <SimpleNodeList Nodes="r.Children" />
+                    </Children>
+                </DisplayNode>
+                break;
+            case InteractNode.Value v:
+                if (v.Type == typeof(ColorOption))
+                {
+                    <ColorOptionNode Node="v" />
+                }
+                else
+                {
+                    <ValueNode Node="v" />
+                }
+                break;
+            case InteractNode.Property r:
+                var child = r.Children.SingleOrDefault();
+                    SuppressionStatus suppress = SuppressionStatus.None;
+                    if (child?.CurrentInstance is null)
+                    {
+                        suppress = new(WellKnownReason.IsNull);
+                    }
+                    <DisplayNode Node="r" Collapsible="child is InteractNode.Object" StartOpen="true" Suppression="@suppress">
+                        <Children>
+                            @if (child is InteractNode.Object obj)
+                            {
+                                <SimpleNodeList Nodes="obj.Children" />
+                            }
+                            else
+                            {
+                                <SimpleNodeList Nodes="r.Children" />
+                            }
+                        </Children>
+                    </DisplayNode>
+                break;
+            case InteractNode.ReturnValue n when n.IsVoid:
+                break;
+            case InteractNode.ReturnValue n:
+                <ReturnValueNode Node="n" />
+                break;
+            case IInvokableNode m when m.IsAvailable:
+                <MethodNode Node="m">
+                    <ParameterChildren>
+                        <SimpleNodeList Nodes="Node.Children.OfType<InteractNode.ParameterList>().SingleOrDefault()?.Children" />
+                    </ParameterChildren>
+                    <ReturnValueChildren>
+                        <SimpleNodeList Nodes="Node.Children.OfType<InteractNode.ReturnValue>()" />
+                    </ReturnValueChildren>
+                </MethodNode>
+                break;
+            case InteractNode.TypeInfo t:
+                <DisplayNode Node="Node" Collapsible="true" StartOpen="false">
+                    <Children>
+                        <SimpleNodeList Nodes="Node.Children" />
+                    </Children>
+                </DisplayNode>
+                break;
+            case InteractNode.Enumerable e:
+                <EnumerableNode Node="e">
+                    <CellContent>
+                        <InteractNodeWrapper Node="context" />
+                    </CellContent>
+                </EnumerableNode>
+                break;
+            default:
+                <DisplayNode Node="Node">
+                    <Children>
+                        <SimpleNodeList Nodes="Node.Children" />
+                    </Children>
+                </DisplayNode>
+                break;
+        }
+    </NodeErrorBoundary>
+}
+
+@code {
+    [Parameter]
+    public IInteractNode? Node { get; set; }
+}

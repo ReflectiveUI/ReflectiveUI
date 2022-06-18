@@ -1,0 +1,18 @@
+﻿@using ValuedTime.Quick.Host
+
+<DisplayNode Node="Node" Collapsible="true" IsOpen="Node?.CurrentInstance is not null">
+    <ChildContent>
+        @if (Node?.CurrentInstance is not null)
+        {
+            <button class="btn btn-outline-danger" @onclick="Node.ReleaseLastResult">Reset</button>
+        }
+    </ChildContent>
+    <Children>
+        <SimpleNodeList Nodes="Node!.Children" />
+    </Children>
+</DisplayNode>
+
+@code {
+    [Parameter]
+    public InteractNode.ReturnValue? Node { get; set; }
+}

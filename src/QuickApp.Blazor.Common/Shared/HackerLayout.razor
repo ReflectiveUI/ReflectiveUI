@@ -1,0 +1,14 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <main>
+        <label class="float-end pe-2"><input type="checkbox" @bind-value="_showSuppressed" /> Show Hidden</label>
+        <div class="root @(_showSuppressed ? "" : "hide-suppressed")">
+            @Body
+        </div>
+    </main>
+</div>
+
+@code {
+    bool _showSuppressed;
+}
