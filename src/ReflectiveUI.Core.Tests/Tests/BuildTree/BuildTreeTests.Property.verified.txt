@@ -1,0 +1,196 @@
+﻿{
+  NodeType: Object,
+  DisplayName: Object With Properties,
+  Id: 1,
+  CurrentInstance_Id: ObjectWithProperties_1,
+  Children: [
+    {
+      NodeType: Property,
+      DisplayName: Object Null Property,
+      Id: 2,
+      ParentId: 1,
+      IsEditable: false,
+      Children: [
+        {
+          NodeType: Object,
+          DisplayName: Object One String Property,
+          Id: 3,
+          ParentId: 2,
+          Children: [
+            {
+              NodeType: Property,
+              DisplayName: Test String Prop,
+              Id: 4,
+              ParentId: 3,
+              IsEditable: false,
+              Children: [
+                {
+                  NodeType: Value,
+                  DisplayName: String,
+                  Id: 5,
+                  ParentId: 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      NodeType: Property,
+      DisplayName: Read Write,
+      Id: 6,
+      ParentId: 1,
+      IsEditable: false,
+      CurrentInstance: {
+        TestStringProp: Test string prop value
+      },
+      Children: [
+        {
+          NodeType: Object,
+          DisplayName: Object One String Property,
+          Id: 7,
+          ParentId: 6,
+          CurrentInstance_Id: ObjectOneStringProperty_1,
+          Children: [
+            {
+              NodeType: Property,
+              DisplayName: Test String Prop,
+              Id: 8,
+              ParentId: 7,
+              IsEditable: true,
+              CurrentInstance: Test string prop value,
+              Children: [
+                {
+                  NodeType: Value,
+                  DisplayName: String,
+                  Id: 9,
+                  ParentId: 8,
+                  CurrentInstance_Value: Test string prop value,
+                  CurrentInstance_Id: String_1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      NodeType: Property,
+      DisplayName: Read Only,
+      Id: 10,
+      ParentId: 1,
+      IsEditable: false,
+      CurrentInstance: {
+        TestStringProp: Test string prop value
+      },
+      Children: [
+        {
+          NodeType: Object,
+          DisplayName: Object One String Property,
+          Id: 11,
+          ParentId: 10,
+          CurrentInstance_Id: ObjectOneStringProperty_2,
+          Children: [
+            {
+              NodeType: Property,
+              DisplayName: Test String Prop,
+              Id: 12,
+              ParentId: 11,
+              IsEditable: true,
+              CurrentInstance: Test string prop value,
+              Children: [
+                {
+                  NodeType: Value,
+                  DisplayName: String,
+                  Id: 13,
+                  ParentId: 12,
+                  CurrentInstance_Value: Test string prop value,
+                  CurrentInstance_Id: String_1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      NodeType: Property,
+      DisplayName: Read Internal Write,
+      Id: 14,
+      ParentId: 1,
+      IsEditable: false,
+      CurrentInstance: {
+        TestStringProp: Test string prop value
+      },
+      Children: [
+        {
+          NodeType: Object,
+          DisplayName: Object One String Property,
+          Id: 15,
+          ParentId: 14,
+          CurrentInstance_Id: ObjectOneStringProperty_3,
+          Children: [
+            {
+              NodeType: Property,
+              DisplayName: Test String Prop,
+              Id: 16,
+              ParentId: 15,
+              IsEditable: true,
+              CurrentInstance: Test string prop value,
+              Children: [
+                {
+                  NodeType: Value,
+                  DisplayName: String,
+                  Id: 17,
+                  ParentId: 16,
+                  CurrentInstance_Value: Test string prop value,
+                  CurrentInstance_Id: String_1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      NodeType: Property,
+      DisplayName: Read Private Write,
+      Id: 18,
+      ParentId: 1,
+      IsEditable: false,
+      CurrentInstance: {
+        TestStringProp: Test string prop value
+      },
+      Children: [
+        {
+          NodeType: Object,
+          DisplayName: Object One String Property,
+          Id: 19,
+          ParentId: 18,
+          CurrentInstance_Id: ObjectOneStringProperty_4,
+          Children: [
+            {
+              NodeType: Property,
+              DisplayName: Test String Prop,
+              Id: 20,
+              ParentId: 19,
+              IsEditable: true,
+              CurrentInstance: Test string prop value,
+              Children: [
+                {
+                  NodeType: Value,
+                  DisplayName: String,
+                  Id: 21,
+                  ParentId: 20,
+                  CurrentInstance_Value: Test string prop value,
+                  CurrentInstance_Id: String_1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

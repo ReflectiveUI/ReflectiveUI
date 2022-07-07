@@ -1,0 +1,41 @@
+﻿{
+  NodeType: Object,
+  DisplayName: Object With Value Property,
+  Id: 1,
+  CurrentInstance_Id: ObjectWithValueProperty_1,
+  Children: [
+    {
+      NodeType: Property,
+      DisplayName: Value Property,
+      Id: 2,
+      ParentId: 1,
+      IsEditable: true,
+      CurrentInstance: Test Value,
+      Children: [
+        {
+          NodeType: Value,
+          DisplayName: String,
+          Id: 3,
+          ParentId: 2,
+          CurrentInstance_Value: Test Value,
+          CurrentInstance_Id: String_1
+        }
+      ]
+    },
+    {
+      NodeType: Property,
+      DisplayName: Value Null Property,
+      Id: 4,
+      ParentId: 1,
+      IsEditable: true,
+      Children: [
+        {
+          NodeType: Value,
+          DisplayName: String,
+          Id: 5,
+          ParentId: 4
+        }
+      ]
+    }
+  ]
+}
