@@ -9,7 +9,7 @@
       DisplayName: Value List Property,
       Id: 2,
       ParentId: 1,
-      IsEditable: false,
+      IsEditable: true,
       CurrentInstance: [
         One,
         Two
@@ -69,7 +69,7 @@
       DisplayName: Value List Null Property,
       Id: 9,
       ParentId: 1,
-      IsEditable: false,
+      IsEditable: true,
       Children: [
         {
           NodeType: Enumerable,

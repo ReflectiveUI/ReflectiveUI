@@ -9,7 +9,7 @@
       DisplayName: Object Null Property,
       Id: 2,
       ParentId: 1,
-      IsEditable: false,
+      IsEditable: true,
       Children: [
         {
           NodeType: Object,
@@ -41,7 +41,7 @@
       DisplayName: Read Write,
       Id: 6,
       ParentId: 1,
-      IsEditable: false,
+      IsEditable: true,
       CurrentInstance: {
         TestStringProp: Test string prop value
       },

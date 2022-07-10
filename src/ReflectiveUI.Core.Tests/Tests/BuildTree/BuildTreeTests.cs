@@ -9,13 +9,13 @@ using ReflectiveUI.Core.ObjectGraph.Nodes;
 using ValuedTime.Quick.Host;
 using VerifyTests;
 
-namespace ValuedTime.App.Tests.Tests.QuickAppTests;
+namespace ReflectiveUI.Core.Tests.Tests.BuildTree;
 
 [UsesVerify]
 public class BuildTreeTests
 {
     [Fact]
-    public Task ActionPropertyNotInvoked() => VerifyAppHostWithRootInstance(new ObjectWithActions());
+    public Task ActionPropertyNotInvoked() => VerifyObjectGraph(new ObjectWithActions());
 
     public class ObjectWithActions
     {
@@ -50,7 +50,7 @@ public class BuildTreeTests
     }
 
     [Fact]
-    public Task Property() => VerifyAppHostWithRootInstance(new ObjectWithProperties());
+    public Task Property() => VerifyObjectGraph(new ObjectWithProperties());
 
     public class ObjectWithProperties
     {
@@ -62,7 +62,7 @@ public class BuildTreeTests
     }
 
     [Fact]
-    public Task MethodNotInvoked() => VerifyAppHostWithRootInstance(new ObjectWithMethod());
+    public Task MethodNotInvoked() => VerifyObjectGraph(new ObjectWithMethod());
 
     [Fact]
     public async Task MethodInvoked()
@@ -118,7 +118,7 @@ public class BuildTreeTests
     }
 
     [Fact]
-    public Task AsyncMethodNotInvoked() => VerifyAppHostWithRootInstance(new ObjectWithAsyncMethod());
+    public Task AsyncMethodNotInvoked() => VerifyObjectGraph(new ObjectWithAsyncMethod());
 
     [Fact]
     public async Task AsyncMethodInvoked()
@@ -175,7 +175,7 @@ public class BuildTreeTests
     }
 
     [Fact]
-    public Task Object() => VerifyAppHostWithRootInstance(new ObjectWithObjectProperty());
+    public Task Object() => VerifyObjectGraph(new ObjectWithObjectProperty());
 
     public class ObjectWithObjectProperty
     {
@@ -184,7 +184,7 @@ public class BuildTreeTests
     }
 
     [Fact]
-    public Task Value() => VerifyAppHostWithRootInstance(new ObjectWithValueProperty());
+    public Task Value() => VerifyObjectGraph(new ObjectWithValueProperty());
 
     [Fact]
     public Task SetPropertyValue()
@@ -208,17 +208,16 @@ public class BuildTreeTests
     }
 
     [Fact]
-    public Task EnumerableValue() => VerifyAppHostWithRootInstance(new ObjectWithValueListProperty());
+    public Task EnumerableValue() => VerifyObjectGraph(new ObjectWithValueListProperty());
 
     public class ObjectWithValueListProperty
     {
         public List<string> ValueListProperty { get; set; } = DataFactory.CreateStringList();
         public List<string>? ValueListNullProperty { get; set; }
-
     }
 
     [Fact]
-    public Task EnumerableObject() => VerifyAppHostWithRootInstance(new ObjectWithObjectListProperty());
+    public Task EnumerableObject() => VerifyObjectGraph(new ObjectWithObjectListProperty());
 
     public class ObjectWithObjectListProperty
     {
@@ -227,7 +226,7 @@ public class BuildTreeTests
 
     }
 
-    private static Task VerifyAppHostWithRootInstance<T>(T root, object? testValues = null) where T : notnull
+    private static Task VerifyObjectGraph<T>(T root, object? testValues = null) where T : notnull
     {
         var sut = new ReflectedObjectGraph<T>(root);
         sut.Reload();

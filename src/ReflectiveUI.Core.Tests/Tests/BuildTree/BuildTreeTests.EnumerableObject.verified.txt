@@ -9,7 +9,7 @@
       DisplayName: Object List Property,
       Id: 2,
       ParentId: 1,
-      IsEditable: false,
+      IsEditable: true,
       CurrentInstance: [
         {
           TestStringProp: Test string prop value
@@ -158,7 +158,7 @@
       DisplayName: Object List Null Property,
       Id: 18,
       ParentId: 1,
-      IsEditable: false,
+      IsEditable: true,
       Children: [
         {
           NodeType: Enumerable,
