@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using ReflectiveUI.Core.ObjectGraph.Nodes;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.Serialization;

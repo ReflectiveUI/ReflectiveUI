@@ -2,15 +2,7 @@ using BeatGeneratorAPI;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using QuickApp.Blazor.Server.Data;
-using QuickApp.Blazor.Server.Infrastructure;
-using ValuedTime.App.Repository;
-using ValuedTime.App.Services;
-using ValuedTime.App.Utilities;
-using ValuedTime.Domain.Abstractions;
-using ValuedTime.Domain.Aggregates;
-using ValuedTime.Quick.Host;
-using ValuedTime.Quick.Target;
+using ReflectiveUI.Core.ObjectGraph;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +12,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<ClockGenerator>();
 
 builder.Services.AddScoped(c => 
-    new AppHost<ClockGenerator>(
+    new ReflectedObjectGraph<ClockGenerator>(
         root: c.GetRequiredService<ClockGenerator>(),
-        logger: c.GetRequiredService<ILogger<AppHost<ClockGenerator>>>()));
+        logger: c.GetRequiredService<ILogger<ReflectedObjectGraph<ClockGenerator>>>()));
 
 var app = builder.Build();
 

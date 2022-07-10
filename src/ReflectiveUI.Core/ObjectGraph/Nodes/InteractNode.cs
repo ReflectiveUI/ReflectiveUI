@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Immutable;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public abstract record InteractNode<TParent, TChild>(NodeContext Context, TParent? Parent) : IInteractNode, IMutableNode
     where TParent : IInteractNode
@@ -15,12 +15,12 @@ public abstract record InteractNode<TParent, TChild>(NodeContext Context, TParen
     // don't do that.
     public ImmutableArray<TChild> Children { get; internal set; } = ImmutableArray<TChild>.Empty;
     public virtual NodeSuppression Suppression { get; internal set; } = NodeSuppression.NoSuppression;
-    NodeSuppression IMutableNode.Suppression { get => this.Suppression; set => this.Suppression = value; }
-    IMutableNode? IMutableNode.Parent { get => (IMutableNode?)this.Parent; set => this.Parent = (TParent?)value; }
-    ImmutableArray<IInteractNode> IMutableNode.Children { get => this.Children.CastArray<IInteractNode>(); set => this.Children = value.Cast<TChild>().ToImmutableArray(); }
+    NodeSuppression IMutableNode.Suppression { get => Suppression; set => Suppression = value; }
+    IMutableNode? IMutableNode.Parent { get => (IMutableNode?)Parent; set => Parent = (TParent?)value; }
+    ImmutableArray<IInteractNode> IMutableNode.Children { get => Children.CastArray<IInteractNode>(); set => Children = value.Cast<TChild>().ToImmutableArray(); }
 
-    IInteractNode? IInteractNode.Parent => this.Parent;
-    ImmutableArray<IInteractNode> IInteractNode.Children => this.Children.CastArray<IInteractNode>();
+    IInteractNode? IInteractNode.Parent => Parent;
+    ImmutableArray<IInteractNode> IInteractNode.Children => Children.CastArray<IInteractNode>();
 
     IMutableNode IMutableNode.Clone(IInteractNode? parent)
     {

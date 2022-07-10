@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ValuedTime.App\ValuedTime.App.csproj" />
-    <ProjectReference Include="..\ValuedTime.Quick\QuickApp.csproj" />
+    <ProjectReference Include="..\ReflectiveUI.Core\ReflectiveUI.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

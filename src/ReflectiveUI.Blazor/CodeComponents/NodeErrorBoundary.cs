@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace QuickApp.Blazor.Common.CodeComponents;
+namespace ReflectiveUI.Blazor.CodeComponents;
 
 /// <summary>
 /// Captures errors thrown from its child content.
@@ -36,40 +36,39 @@ public class NodeErrorBoundary : ErrorBoundaryBase
         }
         else
         {
-            var i = 2;
-            builder.OpenElement(i++, "div");
-            builder.AddAttribute(i++, "class", "blazor-error-boundary");
+            builder.OpenElement(2, "div");
+            builder.AddAttribute(3, "class", "blazor-error-boundary");
 
             if (_showStackTrace)
             {
-                builder.OpenElement(i++, "div");
-                builder.AddAttribute(i++, "class", "blazor-error-boundary--trace");
+                builder.OpenElement(4, "div");
+                builder.AddAttribute(5, "class", "blazor-error-boundary--trace");
                 foreach (var line in CurrentException.ToString().Split(Environment.NewLine))
                 {
-                    builder.AddContent(i++, line);
-                    builder.AddMarkupContent(i++, "<br>");
+                    builder.AddContent(6, line);
+                    builder.AddMarkupContent(7, "<br>");
                 }
                 builder.CloseElement();
             }
             else
             {
-                builder.OpenElement(i++, "div");
-                builder.AddAttribute(i++, "class", "blazor-error-boundary--message");
-                builder.AddContent(i++, CurrentException.Message);
+                builder.OpenElement(8, "div");
+                builder.AddAttribute(9, "class", "blazor-error-boundary--message");
+                builder.AddContent(10, CurrentException.Message);
                 builder.CloseElement();
             }
 
-            builder.OpenElement(i++, "div");
-            builder.AddAttribute(i++, "class", "blazor-error-boundary--options");
-            builder.OpenElement(i++, "button");
-            builder.AddAttribute(i++, "class", "btn btn-dark me-2");
-            builder.AddAttribute(i++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => _showStackTrace = !_showStackTrace));
-            builder.AddContent(i++, "Show/Hide Stack Trace");
+            builder.OpenElement(11, "div");
+            builder.AddAttribute(12, "class", "blazor-error-boundary--options");
+            builder.OpenElement(13, "button");
+            builder.AddAttribute(14, "class", "btn btn-dark me-2");
+            builder.AddAttribute(15, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => _showStackTrace = !_showStackTrace));
+            builder.AddContent(16, "Show/Hide Stack Trace");
             builder.CloseElement();
-            builder.OpenElement(i++, "button");
-            builder.AddAttribute(i++, "class", "btn btn-warning");
-            builder.AddAttribute(i++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, Recover));
-            builder.AddContent(i++, "Continue");
+            builder.OpenElement(17, "button");
+            builder.AddAttribute(18, "class", "btn btn-warning");
+            builder.AddAttribute(19, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, Recover));
+            builder.AddContent(20, "Continue");
             builder.CloseElement();
             builder.CloseElement();
 

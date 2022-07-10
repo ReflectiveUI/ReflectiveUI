@@ -1,5 +1,4 @@
-﻿
-namespace ValuedTime.Quick.Host;
+﻿namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public class NodeContext
 {

@@ -2,7 +2,7 @@
 using System.Reflection;
 using static ValuedTime.Quick.Host.InteractNode;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public interface IInvokableNode : IInteractNode
 {

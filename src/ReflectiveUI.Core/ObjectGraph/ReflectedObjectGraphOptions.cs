@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ValuedTime.Quick.Host
+namespace ReflectiveUI.Core.ObjectGraph
 {
-    public record AppHostSettings
+    public record ReflectedObjectGraphOptions
     {
         public bool SupressIdProperties { get; init; } = true;
         public List<string> AdditionalNamespaces { get; init; } = new();

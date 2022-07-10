@@ -1,7 +1,7 @@
 ﻿
 using System.Reflection;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public interface IMemberNode : IInteractNode
 {

@@ -1,5 +1,5 @@
-﻿@using QuickApp.Blazor.Shared.Custom
-@using QuickApp.Blazor.Shared.InteractNodes
+﻿@using ReflectiveUI.Blazor.Shared.InteractNodes
+@using ReflectiveUI.Core.ObjectGraph.Nodes
 
 @if (Node is not null)
 {
@@ -14,14 +14,7 @@
                 </DisplayNode>
                 break;
             case InteractNode.Value v:
-                if (v.Type == typeof(ColorOption))
-                {
-                    <ColorOptionNode Node="v" />
-                }
-                else
-                {
-                    <ValueNode Node="v" />
-                }
+                <ValueNode Node="v" />
                 break;
             case InteractNode.Property r:
                 var child = r.Children.SingleOrDefault();

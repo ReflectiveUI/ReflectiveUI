@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using QuickApp.Support;
+using ReflectiveUI.Core.ObjectGraph;
+using ReflectiveUI.Core.ObjectGraph.Nodes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,15 +10,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ValuedTime.Quick.Host;
 
-
-[assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(ValuedTime.Quick.Host.HotReloadManager))]
-namespace ValuedTime.Quick.Host;
+[assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(HotReloadManager))]
+namespace ReflectiveUI.Core.ObjectGraph;
 
 internal static class HotReloadManager
 {
     public static event EventHandler<Type[]?>? ApplicationShouldUpdate;
-    public static void ClearCache(Type[]? types) 
+    public static void ClearCache(Type[]? types)
     {
         Console.WriteLine("ClearCache");
         ApplicationShouldUpdate?.Invoke(null, types);
@@ -30,12 +31,12 @@ internal static class HotReloadManager
     }
 }
 
-public class AppHost<T> : IAppHost where T : notnull
+public class ReflectedObjectGraph<T> : IReflectedObjectGraph where T : notnull
 {
     private readonly object _locker = new();
     private readonly T _rootInstance;
-    private readonly AppHostSettings _settings;
-    private readonly ILogger<AppHost<T>>? _logger;
+    private readonly ReflectedObjectGraphOptions _settings;
+    private readonly ILogger<ReflectedObjectGraph<T>>? _logger;
     private readonly List<string> _traversalNamespaces = new();
     private IInteractNode? _root;
     private readonly NodeContext _nodeContext;
@@ -53,14 +54,13 @@ public class AppHost<T> : IAppHost where T : notnull
         }
     }
 
-    public AppHost(T root, AppHostSettings? settings = null, ILogger<AppHost<T>>? logger = null)
+    public ReflectedObjectGraph(T root, ReflectedObjectGraphOptions? settings = null, ILogger<ReflectedObjectGraph<T>>? logger = null)
     {
         _nodeContext = new(NodeUpdated);
         _rootInstance = root;
         _settings = settings ?? new();
         _logger = logger;
         _traversalNamespaces.Add(root?.GetType().Namespace!);
-        _traversalNamespaces.Add(typeof(SelectionBase<>).Namespace!);
         _traversalNamespaces.AddRange(_settings.AdditionalNamespaces);
         HotReloadManager.ApplicationShouldUpdate += (sender, args) =>
         {
@@ -111,7 +111,7 @@ public class AppHost<T> : IAppHost where T : notnull
     private string GetNodePath(IInteractNode node, string basePath = "")
     {
         return basePath + "/" + string.Join(
-            '/', 
+            '/',
             GetPathNodes(node)
                 .Select(n => $"{n.GetType().Name}.{n.Identifier}"));
     }
@@ -194,7 +194,7 @@ public class AppHost<T> : IAppHost where T : notnull
                         new InteractNode.InvokeableMethod(
                             _nodeContext,
                             methodNode,
-                            methodNode.MethodInfo, 
+                            methodNode.MethodInfo,
                             methodNode.DisplayName,
                             () => methodNode.Parent?.CurrentInstance)
                     });
@@ -215,7 +215,7 @@ public class AppHost<T> : IAppHost where T : notnull
 
                 var parameterList = new InteractNode.ParameterList(_nodeContext, invokeableNode);
 
-                ((IMutableNode)invokeableNode).Children = 
+                ((IMutableNode)invokeableNode).Children =
                     ImmutableArray.Create(new IInteractNode[] { parameterList, newLastResult });
                 _nodeCache[path] = invokeableNode;
             }
@@ -296,7 +296,7 @@ public class AppHost<T> : IAppHost where T : notnull
         "<Clone>$",
     });
 
-    private ImmutableArray<IMemberNode> CreateMemberNodes(IInstanceNode node, AppHostSettings settings)
+    private ImmutableArray<IMemberNode> CreateMemberNodes(IInstanceNode node, ReflectedObjectGraphOptions settings)
     {
         var children = node.Type.GetMembers()
             .Select(m => CreateMemberNode(node, m))
@@ -327,7 +327,7 @@ public class AppHost<T> : IAppHost where T : notnull
     private IInteractNode? CreateMemberNode(IInstanceNode parent, MemberInfo m)
     {
         var displayAttribute = m.GetCustomAttribute<DisplayAttribute>();
-        if ((displayAttribute?.GetAutoGenerateField() == false)
+        if (displayAttribute?.GetAutoGenerateField() == false
             || _ignoredMemberNames.Contains(m.Name))
         {
             return null;
@@ -350,7 +350,7 @@ public class AppHost<T> : IAppHost where T : notnull
         return null;
     }
 
-    private void UpdateSuppression(List<IMemberNode> nodes, AppHostSettings settings)
+    private void UpdateSuppression(List<IMemberNode> nodes, ReflectedObjectGraphOptions settings)
     {
         if (settings.SupressIdProperties)
         {
@@ -398,7 +398,7 @@ public class AppHost<T> : IAppHost where T : notnull
                         if (matchProp is not null)
                         {
                             matchedProps.Add(matchProp);
-                            return (matchProp?.CurrentInstance as bool?) == false;
+                            return matchProp?.CurrentInstance as bool? == false;
                         }
                     }
                     return false;

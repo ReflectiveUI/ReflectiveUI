@@ -4,18 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickApp.Blazor.Common.Models
-{
-    public enum WellKnownReason
-    {
-        IsNull,
-        Other,
-    }
+namespace ReflectiveUI.Blazor.Models;
 
-    public record SuppressionStatus(WellKnownReason? Reason, string? SuppressionReason = null)
-    {
-        public bool IsSuppressed => Reason is not null;
-           
-        public static SuppressionStatus None { get; } = new(null, null);
-    }
+public enum WellKnownReason
+{
+    IsNull,
+    Other,
+}
+
+public record SuppressionStatus(WellKnownReason? Reason, string? SuppressionReason = null)
+{
+    public bool IsSuppressed => Reason is not null;
+
+    public static SuppressionStatus None { get; } = new(null, null);
 }

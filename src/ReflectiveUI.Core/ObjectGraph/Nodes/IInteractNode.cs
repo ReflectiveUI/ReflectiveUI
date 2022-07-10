@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Immutable;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public interface IInteractNode
 {

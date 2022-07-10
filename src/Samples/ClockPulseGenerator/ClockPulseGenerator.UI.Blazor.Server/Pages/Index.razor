@@ -1,16 +1,15 @@
 ﻿@page "/"
+
 @using BeatGeneratorAPI
-@using QuickApp.Blazor.Shared
-@using ValuedTime.Quick.Host
-@using ValuedTime.Quick.Target
-@inject AppHost<ClockGenerator> AppHost
+
+@inject ReflectedObjectGraph<ClockGenerator> ObjectGraph
 
 <PageTitle>Valued Time</PageTitle>
 
-@if (AppHost.RootInteractNode is not null)
+@if (ObjectGraph.RootInteractNode is not null)
 {
-    <InteractNodeWrapper Node="AppHost.RootInteractNode" />
-    @*<DebugTree RootNode="AppHost.RootInteractNode" />*@
+    <InteractNodeWrapper Node="ObjectGraph.RootInteractNode" />
+    @*<DebugTree RootNode="ObjectGraph.RootInteractNode" />*@
 }
 
 
@@ -19,12 +18,12 @@
     {
         if (firstRender)
         {
-            AppHost.RootInstance.BeatUpdated += (sender, args) =>
+            ObjectGraph.RootInstance.BeatUpdated += (sender, args) =>
             {
-                AppHost.Reload();
+                ObjectGraph.Reload();
             };
 
-            AppHost.AppUpdated += (sender, args) =>
+            ObjectGraph.AppUpdated += (sender, args) =>
             {
                 InvokeAsync(() =>
                 {
@@ -33,7 +32,7 @@
                 });
             };
             //await AppHost.RootInstance.LoadAsync();
-            AppHost.Reload();
+            ObjectGraph.Reload();
             await Task.CompletedTask;
         }
     }
