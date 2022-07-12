@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ReflectiveUI.Core.ObjectGraph;
 using ReflectiveUI.Core.ObjectGraph.Nodes;
-using ValuedTime.Quick.Host;
 using VerifyTests;
 
 namespace ReflectiveUI.Core.Tests.Tests.BuildTree;
@@ -39,7 +38,7 @@ public class BuildTreeTests
     public async Task ActionPropertyInvoked()
     {
         var root = new ObjectWithActions();
-        var sut = new ReflectedObjectGraph<ObjectWithActions>(root);
+        var sut = new ReflectedStateGraph<ObjectWithActions>(root);
         sut.Reload();
 
         var node = (InteractNode.InvokeableDelegate)sut.RootInteractNode!.Children[0].Children[0];
@@ -68,7 +67,7 @@ public class BuildTreeTests
     public async Task MethodInvoked()
     {
         var root = new ObjectWithMethod();
-        var sut = new ReflectedObjectGraph<ObjectWithMethod>(root);
+        var sut = new ReflectedStateGraph<ObjectWithMethod>(root);
         sut.Reload();
 
         var methodNode = (InteractNode.InvokeableMethod)sut.RootInteractNode!.Children[0].Children[0];
@@ -100,7 +99,7 @@ public class BuildTreeTests
     public async Task MethodEnumerableInvoked()
     {
         var root = new ObjectWithMethodEnumerable();
-        var sut = new ReflectedObjectGraph<ObjectWithMethodEnumerable>(root);
+        var sut = new ReflectedStateGraph<ObjectWithMethodEnumerable>(root);
         sut.Reload();
 
         var methodNode = (InteractNode.InvokeableMethod)sut.RootInteractNode!.Children[0].Children[0];
@@ -124,7 +123,7 @@ public class BuildTreeTests
     public async Task AsyncMethodInvoked()
     {
         var root = new ObjectWithAsyncMethod();
-        var sut = new ReflectedObjectGraph<ObjectWithAsyncMethod>(root);
+        var sut = new ReflectedStateGraph<ObjectWithAsyncMethod>(root);
         sut.Reload();
 
         var methodNode = (InteractNode.InvokeableMethod)sut.RootInteractNode!.Children[0].Children[0];
@@ -157,7 +156,7 @@ public class BuildTreeTests
     public async Task AsyncEnumerableMethodInvoked()
     {
         var root = new ObjectWithAsyncEnumerableMethod();
-        var sut = new ReflectedObjectGraph<ObjectWithAsyncEnumerableMethod>(root);
+        var sut = new ReflectedStateGraph<ObjectWithAsyncEnumerableMethod>(root);
         sut.Reload();
 
         var methodNode = (InteractNode.InvokeableMethod)sut.RootInteractNode!.Children[0].Children[0];
@@ -190,7 +189,7 @@ public class BuildTreeTests
     public Task SetPropertyValue()
     {
         var root = new ObjectWithValueProperty();
-        var sut = new ReflectedObjectGraph<ObjectWithValueProperty>(root);
+        var sut = new ReflectedStateGraph<ObjectWithValueProperty>(root);
         sut.Reload();
 
         var propertyNode = (InteractNode.Property)sut.RootInteractNode!.Children[0];
@@ -228,12 +227,12 @@ public class BuildTreeTests
 
     private static Task VerifyObjectGraph<T>(T root, object? testValues = null) where T : notnull
     {
-        var sut = new ReflectedObjectGraph<T>(root);
+        var sut = new ReflectedStateGraph<T>(root);
         sut.Reload();
         return VerifyAppHost(sut, testValues);
     }
 
-    private static Task VerifyAppHost<T>(ReflectedObjectGraph<T> sut, object? testValues = null) where T : notnull
+    private static Task VerifyAppHost<T>(ReflectedStateGraph<T> sut, object? testValues = null) where T : notnull
     {
         object? data = sut.RootInteractNode;
         if (testValues is not null)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReflectiveUI.Core.ObjectGraph
 {
-    public record ReflectedObjectGraphOptions
+    public record ReflectedStateGraphOptions
     {
         public bool SupressIdProperties { get; init; } = true;
         public List<string> AdditionalNamespaces { get; init; } = new();

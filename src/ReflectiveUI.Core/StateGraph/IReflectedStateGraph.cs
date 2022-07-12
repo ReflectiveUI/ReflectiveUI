@@ -2,7 +2,7 @@
 
 namespace ReflectiveUI.Core.ObjectGraph;
 
-public interface IReflectedObjectGraph
+public interface IReflectedStateGraph
 {
     IInteractNode? RootInteractNode { get; }
 

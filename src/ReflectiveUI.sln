@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{ED39A9FC-7
 		reference.md = reference.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectiveUI.Blazor.Tests", "ReflectiveUI.Blazor.Tests\ReflectiveUI.Blazor.Tests.csproj", "{3856466C-E7B6-4DD0-A433-E0ABA4171ED6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{45B3213B-FCB2-47E5-ACE0-E38856A5BC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45B3213B-FCB2-47E5-ACE0-E38856A5BC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45B3213B-FCB2-47E5-ACE0-E38856A5BC63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3856466C-E7B6-4DD0-A433-E0ABA4171ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3856466C-E7B6-4DD0-A433-E0ABA4171ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3856466C-E7B6-4DD0-A433-E0ABA4171ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3856466C-E7B6-4DD0-A433-E0ABA4171ED6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

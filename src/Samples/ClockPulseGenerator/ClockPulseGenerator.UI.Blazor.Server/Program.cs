@@ -12,9 +12,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<ClockGenerator>();
 
 builder.Services.AddScoped(c => 
-    new ReflectedObjectGraph<ClockGenerator>(
+    new ReflectedStateGraph<ClockGenerator>(
         root: c.GetRequiredService<ClockGenerator>(),
-        logger: c.GetRequiredService<ILogger<ReflectedObjectGraph<ClockGenerator>>>()));
+        logger: c.GetRequiredService<ILogger<ReflectedStateGraph<ClockGenerator>>>()));
 
 var app = builder.Build();
 

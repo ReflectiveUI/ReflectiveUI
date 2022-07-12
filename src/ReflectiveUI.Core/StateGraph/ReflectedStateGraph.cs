@@ -10,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ValuedTime.Quick.Host;
 
 [assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(HotReloadManager))]
 namespace ReflectiveUI.Core.ObjectGraph;
@@ -31,12 +30,12 @@ internal static class HotReloadManager
     }
 }
 
-public class ReflectedObjectGraph<T> : IReflectedObjectGraph where T : notnull
+public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
 {
     private readonly object _locker = new();
     private readonly T _rootInstance;
-    private readonly ReflectedObjectGraphOptions _settings;
-    private readonly ILogger<ReflectedObjectGraph<T>>? _logger;
+    private readonly ReflectedStateGraphOptions _settings;
+    private readonly ILogger<ReflectedStateGraph<T>>? _logger;
     private readonly List<string> _traversalNamespaces = new();
     private IInteractNode? _root;
     private readonly NodeContext _nodeContext;
@@ -54,7 +53,7 @@ public class ReflectedObjectGraph<T> : IReflectedObjectGraph where T : notnull
         }
     }
 
-    public ReflectedObjectGraph(T root, ReflectedObjectGraphOptions? settings = null, ILogger<ReflectedObjectGraph<T>>? logger = null)
+    public ReflectedStateGraph(T root, ReflectedStateGraphOptions? settings = null, ILogger<ReflectedStateGraph<T>>? logger = null)
     {
         _nodeContext = new(NodeUpdated);
         _rootInstance = root;
@@ -296,7 +295,7 @@ public class ReflectedObjectGraph<T> : IReflectedObjectGraph where T : notnull
         "<Clone>$",
     });
 
-    private ImmutableArray<IMemberNode> CreateMemberNodes(IInstanceNode node, ReflectedObjectGraphOptions settings)
+    private ImmutableArray<IMemberNode> CreateMemberNodes(IInstanceNode node, ReflectedStateGraphOptions settings)
     {
         var children = node.Type.GetMembers()
             .Select(m => CreateMemberNode(node, m))
@@ -350,7 +349,7 @@ public class ReflectedObjectGraph<T> : IReflectedObjectGraph where T : notnull
         return null;
     }
 
-    private void UpdateSuppression(List<IMemberNode> nodes, ReflectedObjectGraphOptions settings)
+    private void UpdateSuppression(List<IMemberNode> nodes, ReflectedStateGraphOptions settings)
     {
         if (settings.SupressIdProperties)
         {
