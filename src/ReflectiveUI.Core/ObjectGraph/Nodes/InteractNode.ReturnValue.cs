@@ -2,7 +2,7 @@
 using Humanizer;
 using ReflectiveUI.Core.ObjectGraph.Nodes;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public abstract partial record InteractNode
 {

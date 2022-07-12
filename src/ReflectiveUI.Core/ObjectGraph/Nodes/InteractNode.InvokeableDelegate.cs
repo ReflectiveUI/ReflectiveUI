@@ -2,7 +2,7 @@
 using ReflectiveUI.Core.ObjectGraph.Nodes;
 using System.Reflection;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public abstract partial record InteractNode
 {

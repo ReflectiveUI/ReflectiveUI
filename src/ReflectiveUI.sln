@@ -17,6 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClockPulseGenerator", "Samp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClockPulseGenerator", "ClockPulseGenerator", "{CC9B3D35-5B69-412D-98F0-A9A537D953DC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{ED39A9FC-75CD-4AD7-9DB4-1F6742AB5AA2}"
+	ProjectSection(SolutionItems) = preProject
+		reference.md = reference.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

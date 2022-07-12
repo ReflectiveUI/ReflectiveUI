@@ -4,7 +4,7 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace ValuedTime.Quick.Host;
+namespace ReflectiveUI.Core.ObjectGraph.Nodes;
 
 public abstract partial record InteractNode
 {
