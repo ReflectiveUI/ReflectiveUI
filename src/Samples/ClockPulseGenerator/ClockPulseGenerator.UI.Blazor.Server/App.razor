@@ -1,10 +1,23 @@
 ﻿@using BeatGeneratorAPI
+@using ReflectiveUI.Core.ObjectGraph.Nodes
 
 @inject ReflectedStateGraph<ClockGenerator> ObjectGraph
 
 <PageTitle>Clock Pulse</PageTitle>
 
-<ReflectiveUIApp></ReflectiveUIApp>
+<ReflectiveUIApp>
+    <NodeTemplate Context="Node">
+        @switch (Node)
+        {
+            case InteractNode.Property p when p.CurrentInstance is not null && p.Parent?.Parent is null:
+                <a href="@p.Children.FirstOrDefault()?.Path">@p.PropertyInfo.Name</a>
+                break;
+            default:
+                <DefaultInteractNodeRenderer Node="Node" />
+                break;
+        }
+    </NodeTemplate>
+</ReflectiveUIApp>
 
 @code {
     protected override Task OnAfterRenderAsync(bool firstRender)

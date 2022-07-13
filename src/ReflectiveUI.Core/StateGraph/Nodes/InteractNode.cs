@@ -8,6 +8,7 @@ public abstract record InteractNode<TParent, TChild>(NodeContext Context, TParen
     where TChild : class, IInteractNode
 {
     public TParent? Parent { get; internal set; } = Parent;
+    public string? Path { get; internal set; }
     public abstract string DisplayName { get; }
     public abstract string Identifier { get; }
 
@@ -17,6 +18,7 @@ public abstract record InteractNode<TParent, TChild>(NodeContext Context, TParen
     public virtual NodeSuppression Suppression { get; internal set; } = NodeSuppression.NoSuppression;
     NodeSuppression IMutableNode.Suppression { get => Suppression; set => Suppression = value; }
     IMutableNode? IMutableNode.Parent { get => (IMutableNode?)Parent; set => Parent = (TParent?)value; }
+    string? IMutableNode.Path { get => Path; set => Path = value; }
     ImmutableArray<IInteractNode> IMutableNode.Children { get => Children.CastArray<IInteractNode>(); set => Children = value.Cast<TChild>().ToImmutableArray(); }
 
     IInteractNode? IInteractNode.Parent => Parent;

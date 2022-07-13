@@ -1,0 +1,11 @@
+﻿{
+  Instance: {
+    NodeTemplate: {
+      Type: RenderFragment<IInteractNode>,
+      Target: ComponentParameterCollectionBuilder<ReflectiveUIApp>.<>c__DisplayClass11_0<IInteractNode>,
+      Method: Microsoft.AspNetCore.Components.RenderFragment Add(ReflectiveUI.Core.ObjectGraph.Nodes.IInteractNode)
+    }
+  },
+  NodeCount: 6,
+  Bytes: 260
+}

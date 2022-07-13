@@ -153,6 +153,7 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
         {
             var node = traversalStack.Pop();
             var path = GetNodePath((IInteractNode)node, basePath);
+            node.Path = path;
 
             if (node is InteractNode.Object objNode)
             {

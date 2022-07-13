@@ -9,4 +9,5 @@ internal interface IMutableNode
     ImmutableArray<IInteractNode> Children { get; set; }
     IMutableNode? Parent { get; set; }
     IMutableNode Clone(IInteractNode? newParent);
+    string? Path { get; set; }
 }

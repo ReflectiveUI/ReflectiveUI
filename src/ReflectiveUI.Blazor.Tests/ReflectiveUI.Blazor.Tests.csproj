@@ -29,4 +29,51 @@
     <ProjectReference Include="..\ReflectiveUI.Core\ReflectiveUI.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Rendering\LayoutTests.MatchesObject.00.received.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesObject.00.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesObject.01.received.html">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesObject.01.verified.html">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesRoot.00.received.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesRoot.00.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesRoot.01.received.html">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\LayoutTests.MatchesRoot.01.verified.html">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>LayoutTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\RoutingTests.MatchesObject.00.received.txt">
+      <DependentUpon>RoutingTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\RoutingTests.MatchesObject.00.verified.txt">
+      <DependentUpon>RoutingTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\RoutingTests.MatchesObject.01.received.html">
+      <DependentUpon>RoutingTests.cs</DependentUpon>
+    </None>
+    <None Update="Rendering\RoutingTests.MatchesObject.01.verified.html">
+      <DependentUpon>RoutingTests.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>

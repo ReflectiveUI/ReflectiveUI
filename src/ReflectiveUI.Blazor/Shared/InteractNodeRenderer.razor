@@ -1,12 +1,14 @@
 ﻿
-@if (NodeTemplate is not null)
-{
-    NodeTemplate(Node ?? throw new NullReferenceException(nameof(Node)));
-}
-else
-{
-    <DefaultInteractNodeRenderer Node="@Node" />
-}
+<NodeErrorBoundary>
+    @if (NodeTemplate is not null)
+    {
+        @NodeTemplate(Node ?? throw new NullReferenceException(nameof(Node)));
+    }
+    else
+    {
+        <DefaultInteractNodeRenderer Node="@Node" />
+    }
+</NodeErrorBoundary>
 
 
 @code {
