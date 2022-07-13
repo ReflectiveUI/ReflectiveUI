@@ -1,13 +1,14 @@
 ﻿
-@inject ReflectiveStateTransformer StateTransformer;
+@inject BlazorReflectedStateRoutingPolicy RoutingPolicy;
+@inject IReflectedStateGraph StateGraph;
 
 <ReflectiveUIRouter>
-    <Found Context="bodyContent">
-        <LayoutView Layout="@typeof(TreeLayout)">
-            <ChildContent>
-                @bodyContent
-            </ChildContent>
-        </LayoutView>
+    <Found Context="node">
+        <CascadingValue IsFixed="true" Value="NodeTemplate">
+            <LayoutView Layout="@typeof(TreeLayout)">
+                <InteractNodeRenderer Node="node" />
+            </LayoutView>
+        </CascadingValue>
     </Found>
     <NotFound>
         Not Found
@@ -15,20 +16,45 @@
 </ReflectiveUIRouter>
 
 @code {
-    RenderFragment<IInteractNode> renderRoot =
-        node =>
-            __builder =>
-            {
-                <InteractNodeWrapper Node="node" />
-            };
+
+    [Parameter]
+    public RenderFragment<IInteractNode>? NodeTemplate { get; set; }
+
+    //RenderFragment<IInteractNode> GetNodeTemplate()
+    //{
+    //    return node =>
+    //        __builder =>
+    //        {
+    //            if (NodeTemplate is null)
+    //            {
+    //                <DefaultInteractNodeRenderer Node="node" />
+    //            }
+    //            else
+    //            {
+    //                @NodeTemplate(node);
+    //            }
+    //        };
+    //}
 
     protected override Task OnInitializedAsync()
     {
-        StateTransformer.RoutePageWhen(
-            n => n.Parent is null,
-            route: "/",
-            renderRoot
-        );
+        RoutingPolicy.RoutePageWhen(n => n.Parent is null);
+
+        return Task.CompletedTask;
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateGraph.AppUpdated += (sender, args) =>
+            {
+                InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                });
+            };
+        }
 
         return Task.CompletedTask;
     }

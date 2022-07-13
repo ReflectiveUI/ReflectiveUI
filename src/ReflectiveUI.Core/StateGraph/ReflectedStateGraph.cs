@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -37,8 +38,10 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
     private readonly ReflectedStateGraphOptions _settings;
     private readonly ILogger<ReflectedStateGraph<T>>? _logger;
     private readonly List<string> _traversalNamespaces = new();
-    private IInteractNode? _root;
+    private volatile IInteractNode? _root;
     private readonly NodeContext _nodeContext;
+
+    private Dictionary<string, IInteractNode> _nodeCache = new();
 
     public event EventHandler? AppUpdated;
 
@@ -48,14 +51,25 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
     {
         get
         {
-            lock (_locker)
-            {
-                if (_root == null)
-                    Reload();
+            EnsureRoot();
 
-                return _root;
-            }
+            return _root;
         }
+    }
+
+    private void EnsureRoot()
+    {
+        lock (_locker)
+        {
+            if (_root == null)
+                Reload();
+        }
+    }
+
+    public bool TryGetNode(string path, [MaybeNullWhen(false)] out IInteractNode node)
+    {
+        EnsureRoot();
+        return _nodeCache.TryGetValue(path, out node);
     }
 
     public ReflectedStateGraph(T root, ReflectedStateGraphOptions? settings = null, ILogger<ReflectedStateGraph<T>>? logger = null)
@@ -120,8 +134,6 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
                 .Select(n => $"{n.GetType().Name}.{n.Identifier}"));
     }
 
-    private Dictionary<string, IInteractNode> _nodeCache = new();
-
     private IInteractNode ReloadNodeChildren(IInteractNode reloadRoot)
     {
         // Reload needs to explicitly preserve any ephemeral values otherwise it will rebuild its children based on the objects in the graph directly.
@@ -140,6 +152,7 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
         while (traversalStack.Any())
         {
             var node = traversalStack.Pop();
+            var path = GetNodePath((IInteractNode)node, basePath);
 
             if (node is InteractNode.Object objNode)
             {
@@ -206,7 +219,6 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
             else if (node is IInvokableNode invokeableNode)
             {
                 // Try to preserve any existing result
-                var path = GetNodePath(invokeableNode, basePath);
                 IInteractNode? cacheNode = null;
                 _nodeCache.TryGetValue(path, out cacheNode);
                 InteractNode.ReturnValue? lastResult = (cacheNode as IInvokableNode)?.LastResultNode;
@@ -221,7 +233,6 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
 
                 ((IMutableNode)invokeableNode).Children =
                     ImmutableArray.Create(new IInteractNode[] { parameterList, newLastResult });
-                _nodeCache[path] = invokeableNode;
             }
             else if (node is InteractNode.ParameterList paramNode)
             {
@@ -238,6 +249,8 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
                     CreateInstanceNode(resultNode, resultNode.Type, () => resultNode.CurrentInstance, null)
                 });
             }
+
+            _nodeCache[path] = (IInteractNode)node;
 
             foreach (var child in node.Children) { traversalStack.Push((IMutableNode)child!); }
         }

@@ -2,6 +2,7 @@ using BeatGeneratorAPI;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using ReflectiveUI.Blazor;
 using ReflectiveUI.Core.ObjectGraph;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,13 @@ builder.Services.AddScoped(c =>
     new ReflectedStateGraph<ClockGenerator>(
         root: c.GetRequiredService<ClockGenerator>(),
         logger: c.GetRequiredService<ILogger<ReflectedStateGraph<ClockGenerator>>>()));
+builder.Services.AddScoped<IReflectedStateGraph>(c => c.GetRequiredService<ReflectedStateGraph<ClockGenerator>>());
+
+builder.Services.AddScoped(s =>
+{
+    var t = new BlazorReflectedStateRoutingPolicy(s.GetRequiredService<IReflectedStateGraph>());
+    return t;
+});
 
 var app = builder.Build();
 

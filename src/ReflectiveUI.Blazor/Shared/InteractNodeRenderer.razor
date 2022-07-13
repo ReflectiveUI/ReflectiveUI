@@ -1,0 +1,18 @@
+﻿
+@if (NodeTemplate is not null)
+{
+    NodeTemplate(Node ?? throw new NullReferenceException(nameof(Node)));
+}
+else
+{
+    <DefaultInteractNodeRenderer Node="@Node" />
+}
+
+
+@code {
+    [CascadingParameter]
+    public RenderFragment<IInteractNode>? NodeTemplate { get; set; }
+
+    [Parameter]
+    public IInteractNode? Node { get; set; }
+}

@@ -1,12 +1,19 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(TreeLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(TreeLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using BeatGeneratorAPI
+
+@inject ReflectedStateGraph<ClockGenerator> ObjectGraph
+
+<PageTitle>Clock Pulse</PageTitle>
+
+<ReflectiveUIApp></ReflectiveUIApp>
+
+@code {
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ObjectGraph.RootInstance.BeatUpdated += (s, a) => ObjectGraph.Reload();
+        }
+
+        return Task.CompletedTask;
+    }
+}

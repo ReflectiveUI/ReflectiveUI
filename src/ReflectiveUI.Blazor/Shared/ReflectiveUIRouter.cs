@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReflectiveUI.Core.ObjectGraph;
+using ReflectiveUI.Core.ObjectGraph.Nodes;
 
 namespace ReflectiveUI.Blazor.Shared;
 
@@ -18,9 +12,9 @@ public class ReflectiveUIRouter : IComponent, IHandleAfterRender, IDisposable
 
     [Inject] private NavigationManager? NavigationManager { get; set; }
     [Inject] private INavigationInterception? NavigationInterception { get; set; }
-    [Inject] private ReflectiveStateTransformer? StateTransformer { get; set; }
+    [Inject] private BlazorReflectedStateRoutingPolicy? StateTransformer { get; set; }
 
-    [Parameter] public RenderFragment<RenderFragment>? Found { get; set; }
+    [Parameter] public RenderFragment<IInteractNode>? Found { get; set; }
     [Parameter] public RenderFragment? NotFound { get; set; }
 
     public void Attach(RenderHandle renderHandle)
@@ -75,9 +69,10 @@ public class ReflectiveUIRouter : IComponent, IHandleAfterRender, IDisposable
         }
 
         //var segments = relativeUri.Trim().Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (StateTransformer!.IsRouteAvailable(relativeUri))
+        var node = StateTransformer!.FindRoutableNode(relativeUri);
+        if (node is not null)
         {
-            _renderHandle.Render(Found!(StateTransformer!.RenderRoute(relativeUri)));
+            _renderHandle.Render(Found!(node));
         }
         else
         {

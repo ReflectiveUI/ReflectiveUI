@@ -14,11 +14,9 @@ public class StateTransformationTests
     {
         using var testContext = new TestContext();
 
-        testContext.Services.AddSingleton(s =>
-        {
-            var t = new ReflectiveStateTransformer(new ReflectedStateGraph<TestRoot>(new TestRoot()));
-            return t;
-        });
+        testContext.Services.AddScoped(s => new ReflectedStateGraph<TestRoot>(new TestRoot()));
+        testContext.Services.AddScoped<IReflectedStateGraph>(s => s.GetRequiredService<ReflectedStateGraph<TestRoot>>());
+        testContext.Services.AddScoped<BlazorReflectedStateRoutingPolicy>();
 
         var component = testContext.RenderComponent<ReflectiveUIApp>();
 

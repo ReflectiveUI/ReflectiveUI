@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "QuickApp.Blazor.Server": {
+    "Local": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

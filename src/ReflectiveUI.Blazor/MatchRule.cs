@@ -5,4 +5,4 @@ namespace ReflectiveUI.Blazor;
 
 public record RenderRule(Func<IInteractNode, bool> NodeMatchPredicate, RenderFragment<IInteractNode> Fragment);
 
-public record RouteRule(Func<IInteractNode, bool> NodeMatchPredicate, string Route, RenderFragment<IInteractNode> Fragment);
+public record RouteRule(Func<IInteractNode, bool> NodeMatchPredicate);
