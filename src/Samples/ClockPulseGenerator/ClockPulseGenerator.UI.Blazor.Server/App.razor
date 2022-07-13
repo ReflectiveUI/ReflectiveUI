@@ -10,7 +10,15 @@
         @switch (Node)
         {
             case InteractNode.Property p when p.CurrentInstance is not null && p.Parent?.Parent is null:
-                <a href="@p.Children.FirstOrDefault()?.Path">@p.PropertyInfo.Name</a>
+                var child = p.Children.FirstOrDefault();
+                if (child is InteractNode.Object)
+                {
+                    <a href="@child?.Path">@p.DisplayName</a>
+                }
+                else
+                {
+                    <DefaultInteractNodeRenderer Node="Node" />
+                }
                 break;
             default:
                 <DefaultInteractNodeRenderer Node="Node" />

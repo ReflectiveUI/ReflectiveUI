@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ReflectiveUI.Blazor;
 using ReflectiveUI.Core.ObjectGraph;
+using ReflectiveUI.Core.ObjectGraph.Nodes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IReflectedStateGraph>(c => c.GetRequiredService<Refle
 builder.Services.AddScoped(s =>
 {
     var t = new BlazorReflectedStateRoutingPolicy(s.GetRequiredService<IReflectedStateGraph>());
+    t.RoutePageWhen(n => n is InteractNode.Object);
     return t;
 });
 
