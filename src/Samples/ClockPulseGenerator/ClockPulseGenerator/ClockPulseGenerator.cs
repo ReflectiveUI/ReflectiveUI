@@ -1,7 +1,4 @@
-﻿
-using QuickApp.Support;
-
-namespace BeatGeneratorAPI;
+﻿namespace ClockPulseGenerator;
 
 public class ClockGenerator
 {
@@ -64,7 +61,7 @@ public class ClockGenerator
         }
 
         if (ClockMultiplier.TryGetSelected(out double selectedMultiplier))
-            selectedMultiplier = (1.0/selectedMultiplier) * BASE_MULTIPLIER;
+            selectedMultiplier = 1.0 / selectedMultiplier * BASE_MULTIPLIER;
         else
             selectedMultiplier = BASE_MULTIPLIER;
 
@@ -72,7 +69,7 @@ public class ClockGenerator
         {
             _multiplierAccumulater = 0;
             Outputs.MultipliedClockIsHigh = !Outputs.MultipliedClockIsHigh;
-        }    
+        }
 
         BeatUpdated?.Invoke(this, EventArgs.Empty);
     }
@@ -86,8 +83,8 @@ public class ClockGenerator
         set
         {
             if (_bpm != value)
-            _bpm = value;
-            _timer.Interval = (60 * 1000) / _bpm / BASE_MULTIPLIER;
+                _bpm = value;
+            _timer.Interval = 60 * 1000 / _bpm / BASE_MULTIPLIER;
         }
     }
 }

@@ -34,18 +34,34 @@ internal static class HotReloadManager
 public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
 {
     private readonly object _locker = new();
-    private readonly T _rootInstance;
     private readonly ReflectedStateGraphOptions _settings;
     private readonly ILogger<ReflectedStateGraph<T>>? _logger;
     private readonly List<string> _traversalNamespaces = new();
-    private volatile IInteractNode? _root;
     private readonly NodeContext _nodeContext;
 
+    private volatile IInteractNode? _root;
+    private T _rootInstance;
     private Dictionary<string, IInteractNode> _nodeCache = new();
 
     public event EventHandler? AppUpdated;
 
-    public T RootInstance => _rootInstance;
+    public event EventHandler? HotReloaded;
+
+    public T RootInstance
+    {
+        get
+        {
+            return _rootInstance;
+        }
+        set
+        {
+            if (value is null)
+                throw new NullReferenceException();
+
+            _rootInstance = value;
+            _root = null;
+        }
+    }
 
     public IInteractNode? RootInteractNode
     {
@@ -82,6 +98,7 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
         _traversalNamespaces.AddRange(_settings.AdditionalNamespaces);
         HotReloadManager.ApplicationShouldUpdate += (sender, args) =>
         {
+            HotReloaded?.Invoke(this, EventArgs.Empty);
             Reload();
         };
     }

@@ -1,7 +1,6 @@
-﻿@using BeatGeneratorAPI
-@using ReflectiveUI.Core.ObjectGraph.Nodes
+﻿@using ReflectiveUI.Core.ObjectGraph.Nodes
 
-@inject ReflectedStateGraph<ClockGenerator> ObjectGraph
+@inject ReflectedStateGraph<ClockGenerator> StateGraph
 
 <PageTitle>Clock Pulse</PageTitle>
 
@@ -32,7 +31,7 @@
     {
         if (firstRender)
         {
-            ObjectGraph.RootInstance.BeatUpdated += (s, a) => ObjectGraph.Reload();
+            StateGraph.RootInstance.BeatUpdated += (s, a) => StateGraph.Reload();
         }
 
         return Task.CompletedTask;
