@@ -2,6 +2,11 @@
 @inject BlazorReflectedStateRoutingPolicy RoutingPolicy;
 @inject IReflectedStateGraph StateGraph;
 
+<HeadContent>
+    <link rel="stylesheet" href="_content/ReflectiveUI.Blazor/css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="_content/ReflectiveUI.Blazor/css/default.css" />
+</HeadContent>
+
 <ReflectiveUIRouter>
     <Found Context="node">
         <CascadingValue Value="NodeTemplate">
