@@ -49,7 +49,12 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
         get
         {
             lock (_locker)
+            {
+                if (_root == null)
+                    Reload();
+
                 return _root;
+            }
         }
     }
 

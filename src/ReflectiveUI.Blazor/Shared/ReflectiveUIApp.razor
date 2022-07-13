@@ -1,0 +1,35 @@
+﻿
+@inject ReflectiveStateTransformer StateTransformer;
+
+<ReflectiveUIRouter>
+    <Found Context="bodyContent">
+        <LayoutView Layout="@typeof(TreeLayout)">
+            <ChildContent>
+                @bodyContent
+            </ChildContent>
+        </LayoutView>
+    </Found>
+    <NotFound>
+        Not Found
+    </NotFound>
+</ReflectiveUIRouter>
+
+@code {
+    RenderFragment<IInteractNode> renderRoot =
+        node =>
+            __builder =>
+            {
+                <InteractNodeWrapper Node="node" />
+            };
+
+    protected override Task OnInitializedAsync()
+    {
+        StateTransformer.RoutePageWhen(
+            n => n.Parent is null,
+            route: "/",
+            renderRoot
+        );
+
+        return Task.CompletedTask;
+    }
+}

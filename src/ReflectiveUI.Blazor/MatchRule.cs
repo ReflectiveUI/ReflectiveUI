@@ -3,10 +3,6 @@ using ReflectiveUI.Core.ObjectGraph.Nodes;
 
 namespace ReflectiveUI.Blazor;
 
-public enum TransformAction
-{
-    ShowComponent,
-    RouteComponent
-}
+public record RenderRule(Func<IInteractNode, bool> NodeMatchPredicate, RenderFragment<IInteractNode> Fragment);
 
-public record MatchRule(TransformAction TransformAction, Func<IInteractNode, bool> NodeMatchPredicate, Func<IInteractNode, RenderFragment> componentFactory);
+public record RouteRule(Func<IInteractNode, bool> NodeMatchPredicate, string Route, RenderFragment<IInteractNode> Fragment);

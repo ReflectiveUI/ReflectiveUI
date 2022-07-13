@@ -1,5 +1,7 @@
 
 using Bunit;
+using Microsoft.Extensions.DependencyInjection;
+using ReflectiveUI.Blazor.Shared;
 using ReflectiveUI.Core.ObjectGraph;
 
 namespace ReflectiveUI.Blazor.Tests.StateTransformation;
@@ -10,13 +12,17 @@ public class StateTransformationTests
     [Fact]
     public Task MatchesObject()
     {
-        //var graph = new ReflectedStateGraph<TestRoot>(new TestRoot());
-        //var sut = new BlazorReflector(graph);
-        //sut.RoutPageWhen(n => n.Parent is null);
-
         using var testContext = new TestContext();
-        var component = testContext.RenderComponent<TestApp>();
-        return Verify("");
+
+        testContext.Services.AddSingleton(s =>
+        {
+            var t = new ReflectiveStateTransformer(new ReflectedStateGraph<TestRoot>(new TestRoot()));
+            return t;
+        });
+
+        var component = testContext.RenderComponent<ReflectiveUIApp>();
+
+        return Verify(component);
     }
 }
 
