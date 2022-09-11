@@ -8,7 +8,7 @@ namespace ReflectiveUI.Core.ObjectGraph
 {
     public record ReflectedStateGraphOptions
     {
-        public bool SupressIdProperties { get; init; } = true;
+        public bool SuppressIdProperties { get; init; } = true;
         public List<string> AdditionalNamespaces { get; init; } = new();
         public bool SuppressMethodsUsingCanPropertyPrefix { get; init; } = true;
         public bool SuppressNullProperties { get; init; } = true;
