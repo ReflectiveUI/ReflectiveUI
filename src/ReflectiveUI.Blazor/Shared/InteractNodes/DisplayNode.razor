@@ -1,13 +1,13 @@
 ﻿
 @if (Node is not null)
 {
-    var supressedClass = Suppression.IsSuppressed
+    var suppressedClass = Suppression.IsSuppressed
         ? "node-suppressed"
         : "";
     var collapseClass = Collapsible ? "node-collapse" : "";
     var openAttribute = Collapsible ? "" : "open";
     <details @attributes="_detailsAttributes"
-        class="node @collapseClass @supressedClass node-@Node.GetType().Name.ToLowerInvariant()">
+        class="node @collapseClass @suppressedClass node-@Node.GetType().Name.ToLowerInvariant()">
         <summary @onclick:preventDefault="!Collapsible" @onclick="() => IsOpen = !IsOpen">
             <div class="node-name">
                 <span>

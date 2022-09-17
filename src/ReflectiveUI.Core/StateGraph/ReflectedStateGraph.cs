@@ -387,7 +387,7 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
 
     private void UpdateSuppression(List<IMemberNode> nodes, ReflectedStateGraphOptions settings)
     {
-        if (settings.SupressIdProperties)
+        if (settings.SuppressIdProperties)
         {
             var suppressedProperties = nodes
                 .Where(c => c switch
@@ -399,7 +399,7 @@ public class ReflectedStateGraph<T> : IReflectedStateGraph where T : notnull
 
             suppressedProperties.ForEach(sm =>
                 ((IMutableNode)sm).Suppression =
-                    new NodeSuppression(true, $"Property ends with 'id' and {nameof(settings.SupressIdProperties)} is true."));
+                    new NodeSuppression(true, $"Property ends with 'id' and {nameof(settings.SuppressIdProperties)} is true."));
         }
 
         if (settings.SuppressNullProperties)
